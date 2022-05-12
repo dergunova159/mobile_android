@@ -55,7 +55,7 @@ public class DB {
         return list;
     }
     //INSERT запрос для таблицы Сенсоров
-    public static void addSensor(String sensor, Context context){
+    public static void addSensor(String sensor, int type, Context context){
         DataBaseHelper databaseHelper;
         SQLiteDatabase bd;
         databaseHelper = new DataBaseHelper(context);
@@ -67,6 +67,7 @@ public class DB {
         bd = databaseHelper.getReadableDatabase();
         ContentValues newValues = new ContentValues();
         newValues.put("sensor", sensor);
+        newValues.put("type", type);
         bd.insert("sensors_table", null, newValues);
     }
 

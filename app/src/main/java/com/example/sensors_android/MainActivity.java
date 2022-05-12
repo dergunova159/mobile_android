@@ -36,10 +36,9 @@ public class MainActivity extends AppCompatActivity {
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> deviceSensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
         //в цикле добавим эти названия в таблицу в базе данных
-        String str; // вспомогательная переменная
+
         for (int i = 0; i < deviceSensors.size(); i++) {
-            str = deviceSensors.get(i).getName(); //считываем название сенсора
-            DB.addSensor(str, this); // добавим название в базу данных
+            DB.addSensor(deviceSensors.get(i).getName(), deviceSensors.get(i).getType(),  this); // добавим сенсор в базу данных
         }
 
         //отобразим количество датчиков на экране

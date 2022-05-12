@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
 
         listView = findViewById(R.id.list); //переменная для связи с ListView
         countSensors = findViewById(R.id.countSensors); //переменная для связи вывода количества датчиков на экран
@@ -50,6 +55,18 @@ public class MainActivity extends AppCompatActivity {
 
         //покажем список с помощью listView
         listView.setAdapter(adapter);
+
+        //по нажатию на элемент списка откроем активити для демонстрации работы выбранного сенсора
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, SensorActivity.class);
+                Log.d("mySensor",  " i = " + i);
+                Log.d("mySensor",  " sensor = " + deviceSensors.get(i).getType());
+                intent.putExtra("typeSensor", deviceSensors.get(i).getType() + "");
+                startActivity(intent);
+            }
+        });
 
     }
 }

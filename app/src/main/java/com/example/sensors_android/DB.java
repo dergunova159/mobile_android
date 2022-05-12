@@ -48,7 +48,7 @@ public class DB {
         List<String> list = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
-            list.add(cursor.getString(1));
+            list.add(cursor.getString(1) + " (type " + cursor.getString(2) + ")");
             cursor.moveToNext();
         }
         cursor.close();

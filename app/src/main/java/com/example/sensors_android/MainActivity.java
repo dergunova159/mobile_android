@@ -56,15 +56,13 @@ public class MainActivity extends AppCompatActivity {
         //покажем список с помощью listView
         listView.setAdapter(adapter);
 
-        //по нажатию на элемент списка откроем активити для демонстрации работы выбранного сенсора
+        //по нажатию на элемент списка откроем активити для демонстрации работы выбранного датчика
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(MainActivity.this, SensorActivity.class);
-                Log.d("mySensor",  " i = " + i);
-                Log.d("mySensor",  " sensor = " + deviceSensors.get(i).getType());
-                intent.putExtra("typeSensor", deviceSensors.get(i).getType() + "");
-                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, SensorActivity.class); // создаем новый интент
+                intent.putExtra("typeSensor", deviceSensors.get(i).getType() + ""); // передаем в новое окно информацию о типе датчика
+                startActivity(intent); // запускаем новое окно
             }
         });
 

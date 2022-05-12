@@ -14,9 +14,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+//класс для подключения к базе данных
+
+// база данных sensors.db лежит в папке assets
+// там же находится и схема базы данных - schema.png
+
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    private static String DB_NAME = "sensors.db";
+    private static String DB_NAME = "sensors.db"; // наша база данных
     private static String DB_PATH = "";
     private static final int DB_VERSION = 2;
 

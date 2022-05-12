@@ -20,12 +20,14 @@ import java.util.List;
 
 public class SensorActivity extends AppCompatActivity {
 
+
+    // объекты для работы с датчиками
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
 
-    ListView sensorValueList;
-    TextView sensorName;
+    ListView sensorValueList; //список для отображения данных датчика
+    TextView sensorName; // поле отображения названия (type) датчика
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,28 +35,37 @@ public class SensorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sensor);
         getSupportActionBar().hide();
 
+        //привязка с реальными View элементами активити
         sensorValueList = findViewById(R.id.sensorValueList);
         sensorName = findViewById(R.id.sensorName);
 
+       //инициализируем менеджера датчиков
        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-       int type = Integer.parseInt(getIntent().getStringExtra("typeSensor"));
-       if (sensorManager != null)
-           sensor = sensorManager.getDefaultSensor(type);
 
+       int type = Integer.parseInt(getIntent().getStringExtra("typeSensor")); // получаем тип нужного датчика
+
+
+       if (sensorManager != null)
+           sensor = sensorManager.getDefaultSensor(type);  // если все хорошо, то инициализируем сенсор
+
+       sensorName.setText("датчик: " + sensor.getName());  // отбражаем его название (type) в поле TextView
+
+       // создаем адаптер и привязываем наш listVew к нему
        List<String> list = new ArrayList<>();
        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
        sensorValueList.setAdapter(adapter);
 
+       //"слушатель" сенсора
        sensorEventListener = new SensorEventListener() {
+
+           //метод обработки при получении данных с датчика
            @Override
            public void onSensorChanged(SensorEvent sensorEvent) {
                list.clear();
-               float[] nums = sensorEvent.values;
-               String[] a=Arrays.toString(nums).split("[\\[\\]]")[1].split(", ");
-               list.addAll(Arrays.asList(a));
-               adapter.notifyDataSetChanged();
-
-               sensorName.setText(sensor.getName());
+               float[] nums = sensorEvent.values; // получаем данные от датчика в виде массива float[]
+               String[] a=Arrays.toString(nums).split("[\\[\\]]")[1].split(", "); // преобразуем массив чисел в массив строк
+               list.addAll(Arrays.asList(a)); // создаем список для адаптера из массива
+               adapter.notifyDataSetChanged(); // обновляем адаптер, а значит и список
            }
 
            @Override
@@ -67,12 +78,12 @@ public class SensorActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(sensorEventListener, sensor,SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(sensorEventListener, sensor,SensorManager.SENSOR_DELAY_FASTEST);  //регистрируем "слушателя датчика" каждый раз при возобновлении окна
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(sensorEventListener);
+        sensorManager.unregisterListener(sensorEventListener); //убираем регистрацию счетчика
     }
 }
